@@ -428,11 +428,11 @@ int main() {
 		Texture2D::sptr reflectivity = Texture2D::LoadFromFile("images/box-reflections.bmp");
 
 		Texture2D::sptr groundTex = Texture2D::LoadFromFile("images/MetalFloor.jpg");
-		Texture2D::sptr charTex = Texture2D::LoadFromFile("images/MetalFloor.jpg");
+		Texture2D::sptr charTex = Texture2D::LoadFromFile("images/Metal.jpeg");
 
 		// Load the cube map
 		//TextureCubeMap::sptr environmentMap = TextureCubeMap::LoadFromImages("images/cubemaps/skybox/sample.jpg");
-		TextureCubeMap::sptr environmentMap = TextureCubeMap::LoadFromImages("images/cubemaps/skybox/ocean.jpg"); 
+		TextureCubeMap::sptr environmentMap = TextureCubeMap::LoadFromImages("images/cubemaps/skybox/sample.jpg"); 
 
 		// Creating an empty texture
 		Texture2DDescription desc = Texture2DDescription();  
@@ -690,9 +690,11 @@ int main() {
 			MeshFactory::InvertFaces(mesh);
 			VertexArrayObject::sptr meshVao = mesh.Bake();
 			
+			/*
 			GameObject skyboxObj = scene->CreateEntity("skybox");  
 			skyboxObj.get<Transform>().SetLocalPosition(0.0f, 0.0f, 0.0f);
 			skyboxObj.get_or_emplace<RendererComponent>().SetMesh(meshVao).SetMaterial(skyboxMat);
+			*/
 		}
 		////////////////////////////////////////////////////////////////////////////////////////
 
