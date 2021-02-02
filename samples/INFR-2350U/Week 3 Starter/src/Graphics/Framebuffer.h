@@ -21,8 +21,8 @@ struct ColorTarget
 	~ColorTarget();
 	//Deletes the texture of the colour targets
 	void Unload();
-	//holds the colour texture
 	std::vector<Texture2D> _textures;
+	//holds the colour texture
 	std::vector<GLenum> _formats;
 	std::vector<GLenum> _buffers;
 	//stores the number of colour attachments this target has
