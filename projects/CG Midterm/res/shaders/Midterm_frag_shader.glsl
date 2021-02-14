@@ -23,6 +23,7 @@ uniform int u_SpecularBool;
 uniform int u_NoLighting;
 uniform int u_AllLighting;
 uniform int u_ToonLighting;
+uniform int u_Texture;
 
 out vec4 frag_color;
 
@@ -57,33 +58,57 @@ void main() {
 	//Texture 
 	vec4 textureColor = texture(s_Diffuse, inUV);
 
-	vec3 result = (ambient + diffuse + specular) * inColor * textureColor.rgb;
+	vec3 result = (ambient + diffuse + specular) * inColor;
+	if(u_Texture == 1)
+	{
+		result *= textureColor.rgb;
+	}
 
 	if(u_AllLighting == 1)
 	{
-		result = (ambient + diffuse + specular) * inColor * textureColor.rgb;
+		result = (ambient + diffuse + specular) * inColor;
+		if(u_Texture == 1)
+		{
+			result *= textureColor.rgb;
+		}
 	}
 
 	if(u_NoLighting == 1)
 	{
-		result = inColor * textureColor.rgb;
+		result = inColor;
+		if(u_Texture == 1)
+		{
+			result *= textureColor.rgb;
+		}
 	}
 
 	if(u_AmbientBool == 1)
 	{
-		result = ambient * inColor * textureColor.rgb;
+		result = ambient * inColor;
+		if(u_Texture == 1)
+		{
+			result *= textureColor.rgb;
+		}
 	}
 
 	if(u_SpecularBool == 1)
 	{
-		result = specular * inColor * textureColor.rgb;
+		result = specular * inColor;
+		if(u_Texture == 1)
+		{
+			result *= textureColor.rgb;
+		}
 	}
 	if(u_ToonLighting == 1)
 	{
 		diffuse = floor(diffuse * toonBands) * scale;
 		diffuse *= outline;
 
-		result = (ambient + diffuse + specular) * inColor * textureColor.rgb;
+		result = (ambient + diffuse + specular) * inColor;
+		if(u_Texture == 1)
+		{
+			result *= textureColor.rgb;
+		}
 	}
 
 	frag_color = vec4(result, 1.0);

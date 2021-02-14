@@ -22,7 +22,7 @@ public:
 	void SetBrightness(float brightness);
 
 private:
-	float _brightnessThreshold = 0.072f;
+	float _brightnessThreshold = 1.f;
 	int _pass = 10;
 	glm::vec2 _pixelSize;
 };

@@ -83,7 +83,7 @@ int main() {
 		shader->SetUniform("u_LightAttenuationQuadratic", lightQuadraticFalloff);
 
 		PostEffect* basicEffect;
-
+		
 		int activeEffect = 0;
 		std::vector<PostEffect*> effects;
 
@@ -217,6 +217,7 @@ int main() {
 		bool noLighting = false;
 		bool allLighting = true;
 		bool toonLighting = false;
+		bool textureToggle = true;
 
 		Projshader->SetUniform("u_AmbientStrength", ambientPow2);
 		Projshader->SetUniform("u_AmbientLightStrength", lightAmbientPow2);
@@ -230,6 +231,7 @@ int main() {
 		Projshader->SetUniform("u_AllLighting", (int)allLighting);
 		Projshader->SetUniform("u_AllLighting", (int)allLighting);
 		Projshader->SetUniform("u_ToonLighting", (int)toonLighting);
+		Projshader->SetUniform("u_Texture", (int)textureToggle);
 
 
 		BackendHandler::imGuiCallbacks.push_back([&]() {
@@ -279,12 +281,27 @@ int main() {
 				ambientBool = false;
 				specularBool = false;
 			}
+			if (textureToggle)
+			{
+				if (ImGui::Button("Textures off"))
+				{
+					textureToggle = false;
+				}
+			}
+			else
+			{
+				if (ImGui::Button("Textures on"))
+				{
+					textureToggle = true;
+				}
+			}
 
 			Projshader->SetUniform("u_AmbientBool", (int)ambientBool);
 			Projshader->SetUniform("u_SpecularBool", (int)specularBool);
 			Projshader->SetUniform("u_NoLighting", (int)noLighting);
 			Projshader->SetUniform("u_AllLighting", (int)allLighting);
 			Projshader->SetUniform("u_ToonLighting", (int)toonLighting);
+			Projshader->SetUniform("u_Texture", (int)textureToggle);
 			});
 
 		#pragma endregion 
@@ -298,8 +315,7 @@ int main() {
 
 		// Load some textures from files
 		Texture2D::sptr stone = Texture2D::LoadFromFile("images/Stone_001_Diffuse.png");
-		Texture2D::sptr stoneSpec = Texture2D::LoadFromFile("images/Stone_001_Specular.png");
-		
+		Texture2D::sptr stoneSpec = Texture2D::LoadFromFile("images/Stone_001_Specular.png");		
 		Texture2D::sptr noSpec = Texture2D::LoadFromFile("images/grassSpec.png");
 		Texture2D::sptr box = Texture2D::LoadFromFile("images/box.bmp");
 		Texture2D::sptr boxSpec = Texture2D::LoadFromFile("images/box-reflections.bmp");
@@ -307,6 +323,8 @@ int main() {
 
 		Texture2D::sptr tree = Texture2D::LoadFromFile("images/TreeTexture.png");
 		Texture2D::sptr grass = Texture2D::LoadFromFile("images/MidtermGrass.jpg");
+		Texture2D::sptr rock = Texture2D::LoadFromFile("images/RockTexture.png");
+		Texture2D::sptr birdTex = Texture2D::LoadFromFile("images/BirdTexture.png");
 
 		LUT3D testCube("cubes/test.cube");
 
@@ -370,17 +388,23 @@ int main() {
 		simpleFloraMat->Set("u_Shininess", 8.0f);
 		simpleFloraMat->Set("u_TextureMix", 0.0f);
 
-		ShaderMaterial::sptr ProjCharMat = ShaderMaterial::Create();
-		ProjCharMat->Shader = Projshader;
-		ProjCharMat->Set("s_Specular", 5.0f);
-		ProjCharMat->Set("u_Shininess", 8.0f);
-		ProjCharMat->Set("s_Diffuse", stone);
+		ShaderMaterial::sptr ProjRockMat = ShaderMaterial::Create();
+		ProjRockMat->Shader = Projshader;
+		ProjRockMat->Set("s_Specular", 5.0f);
+		ProjRockMat->Set("u_Shininess", 8.0f);
+		ProjRockMat->Set("s_Diffuse", rock);
 
 		ShaderMaterial::sptr ProjTreeMat = ShaderMaterial::Create();
 		ProjTreeMat->Shader = Projshader;
 		ProjTreeMat->Set("s_Specular", 5.0f);
 		ProjTreeMat->Set("u_Shininess", 8.0f);
 		ProjTreeMat->Set("s_Diffuse", tree);
+
+		ShaderMaterial::sptr ProjBirdMat = ShaderMaterial::Create();
+		ProjBirdMat->Shader = Projshader;
+		ProjBirdMat->Set("s_Specular", 5.0f);
+		ProjBirdMat->Set("u_Shininess", 8.0f);
+		ProjBirdMat->Set("s_Diffuse", birdTex);
 		
 		GameObject obj1 = scene->CreateEntity("Ground"); 
 		{
@@ -403,6 +427,55 @@ int main() {
 			tree1.emplace<RendererComponent>().SetMesh(vao).SetMaterial(ProjTreeMat);
 			tree1.get<Transform>().SetLocalPosition(-10.0f, -10.0f, 6.0f);
 			tree1.get<Transform>().SetLocalRotation(90.0, 0.0, 0.0);
+		}
+
+		GameObject tree2 = scene->CreateEntity("Tree2");
+		{
+			VertexArrayObject::sptr vao = ObjLoader::LoadFromFile("models/MidtermTree.obj");
+			tree2.emplace<RendererComponent>().SetMesh(vao).SetMaterial(ProjTreeMat);
+			tree2.get<Transform>().SetLocalPosition(11.5f, -4.0f, 6.0f);
+			tree2.get<Transform>().SetLocalRotation(90.0, 0.0, 0.0);
+		}
+
+		GameObject rock1 = scene->CreateEntity("Rock1");
+		{
+			VertexArrayObject::sptr vao = ObjLoader::LoadFromFile("models/MidtermRock.obj");
+			rock1.emplace<RendererComponent>().SetMesh(vao).SetMaterial(ProjRockMat);
+			rock1.get<Transform>().SetLocalPosition(-10.0f, 10.0f, 0.0f);
+			rock1.get<Transform>().SetLocalRotation(90.0, 0.0, 0.0);
+		}
+
+		GameObject rock2 = scene->CreateEntity("Rock2");
+		{
+			VertexArrayObject::sptr vao = ObjLoader::LoadFromFile("models/MidtermRock.obj");
+			rock2.emplace<RendererComponent>().SetMesh(vao).SetMaterial(ProjRockMat);
+			rock2.get<Transform>().SetLocalPosition(8.0f, -10.0f, 0.0f);
+			rock2.get<Transform>().SetLocalRotation(90.0, 0.0, 0.0);
+		}
+
+		GameObject rock3 = scene->CreateEntity("Rock3");
+		{
+			VertexArrayObject::sptr vao = ObjLoader::LoadFromFile("models/MidtermRock.obj");
+			rock3.emplace<RendererComponent>().SetMesh(vao).SetMaterial(ProjRockMat);
+			rock3.get<Transform>().SetLocalPosition(8.0f, 7.0f, 0.0f);
+			rock3.get<Transform>().SetLocalRotation(90.0, 0.0, 0.0);
+		}
+
+		GameObject bird = scene->CreateEntity("Bird");
+		{
+			VertexArrayObject::sptr vao = ObjLoader::LoadFromFile("models/MidtermBird.obj");
+			bird.emplace<RendererComponent>().SetMesh(vao).SetMaterial(ProjBirdMat);
+			bird.get<Transform>().SetLocalPosition(0.0f, 0.0f, 5.0f);
+			bird.get<Transform>().SetLocalRotation(90.0, 0.0, 0.0);
+
+			//movement
+			auto pathing = BehaviourBinding::Bind<FollowPathBehaviour>(bird);
+
+			pathing->Points.push_back({ 3.0f, 3.0f, 5.0f });
+			pathing->Points.push_back({ -3.0f, 3.0f, 5.0f });
+			pathing->Points.push_back({ -3.0f, -3.0f, 5.0f });
+			pathing->Points.push_back({ 3.0f, -3.0f, 5.0f });
+			pathing->Speed = 4.0f;
 		}
 		
 		/*
