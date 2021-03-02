@@ -198,6 +198,7 @@ int main() {
 		Texture2D::sptr box = Texture2D::LoadFromFile("images/box.bmp");
 		Texture2D::sptr boxSpec = Texture2D::LoadFromFile("images/box-reflections.bmp");
 		Texture2D::sptr simpleFlora = Texture2D::LoadFromFile("images/SimpleFlora.png");
+		LUT3D testCube("cubes/BrightenedCorrection.cube");
 
 		LUT3D testCube("cubes/test.cube");
 
