@@ -200,7 +200,7 @@ int main() {
 		Texture2D::sptr simpleFlora = Texture2D::LoadFromFile("images/SimpleFlora.png");
 		LUT3D testCube("cubes/BrightenedCorrection.cube");
 
-		LUT3D testCube("cubes/test.cube");
+		//LUT3D testCube("cubes/test.cube");
 
 		// Load the cube map
 		//TextureCubeMap::sptr environmentMap = TextureCubeMap::LoadFromImages("images/cubemaps/skybox/sample.jpg");

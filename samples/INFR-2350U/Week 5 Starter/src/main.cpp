@@ -78,7 +78,7 @@ int main() {
 		directionalLightBuffer.SendData(reinterpret_cast<void*>(&theSun), sizeof(DirectionalLight));
 
 		directionalLightBuffer.Bind(0);
-
+		
 		//Basic effect for drawing to
 		PostEffect* basicEffect;
 		Framebuffer* shadowBuffer;
@@ -285,7 +285,7 @@ int main() {
 		EnvironmentGenerator::AddObjectToGeneration("models/simpleRock.obj", simpleFloraMat, 24,
 			spawnFromHere, spawnToHere, rockAvoidAreasFrom, rockAvoidAreasTo);
 		EnvironmentGenerator::GenerateEnvironment();
-
+		
 		// Create an object to be our camera
 		GameObject cameraObject = scene->CreateEntity("Camera");
 		{
@@ -303,6 +303,9 @@ int main() {
 
 		int width, height;
 		glfwGetWindowSize(BackendHandler::window, &width, &height);
+		
+		int shadowWidth = 4896;
+		int shadowHeight = 4896;
 
 		int shadowWidth = 4096;
 		int shadowHeight = 4096;
@@ -453,7 +456,6 @@ int main() {
 				effects[i]->Clear();
 			}
 			shadowBuffer->Clear();
-
 
 			glClearColor(0.08f, 0.17f, 0.31f, 1.0f);
 			glEnable(GL_DEPTH_TEST);
