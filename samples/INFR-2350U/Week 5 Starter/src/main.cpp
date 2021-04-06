@@ -303,9 +303,6 @@ int main() {
 
 		int width, height;
 		glfwGetWindowSize(BackendHandler::window, &width, &height);
-		
-		int shadowWidth = 4896;
-		int shadowHeight = 4896;
 
 		int shadowWidth = 4096;
 		int shadowHeight = 4096;

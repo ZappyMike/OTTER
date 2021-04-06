@@ -466,6 +466,9 @@ int main() {
 			shadowBuffer->Clear();
 			gBuffer->Clear();
 
+=======
+			illuminationBuffer->Clear();
+>>>>>>> Stashed changes
 
 			glClearColor(1.0f, 1.0f, 1.0f, 0.3f);
 			glEnable(GL_DEPTH_TEST);
@@ -586,6 +589,8 @@ int main() {
 			}
 
 			//effects[activeEffect]->ApplyEffect(basicEffect);
+			
+			//effects[activeEffect]->DrawToScreen();
 			
 			//effects[activeEffect]->DrawToScreen();
 			
